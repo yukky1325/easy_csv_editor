@@ -742,7 +742,7 @@ Rails.application.routes.draw do
   resources :csv_files, only: [], param: :token do
     member do
       get :preview
-      post :process
+      post :process, action: :run
       get :result
       get :download
     end
@@ -751,6 +751,8 @@ Rails.application.routes.draw do
   post "csv_files", to: "csv_files#create", as: :csv_files
 end
 ```
+
+> **補足:** `process` は ActionController の内部メソッドと衝突するため、ルート名は `process` のまま、アクション名は `run` を使用する（`post :process, action: :run`）。
 
 ---
 

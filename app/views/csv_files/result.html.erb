@@ -1,0 +1,67 @@
+<% content_for :title, "加工完了" %>
+
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <%= render "shared/page_header",
+               title: "加工完了",
+               subtitle: "CSVの加工が完了しました。内容を確認のうえ、ダウンロードしてください。" %>
+
+    <div class="card csv-card mb-4">
+      <div class="card-body p-4">
+        <div class="csv-result-highlight">
+          <div class="csv-result-metric">
+            <span class="csv-result-metric-label">加工後行数</span>
+            <span class="csv-result-metric-value"><%= @result[:rows_after] %></span>
+          </div>
+          <div class="csv-result-metric">
+            <span class="csv-result-metric-label">削除行数</span>
+            <span class="csv-result-metric-value"><%= @result[:rows_removed] %></span>
+          </div>
+          <div class="csv-result-metric">
+            <span class="csv-result-metric-label">出力列数</span>
+            <span class="csv-result-metric-value"><%= @result[:columns_count] %></span>
+          </div>
+        </div>
+
+        <h2 class="h6 text-muted mb-3">加工結果の詳細</h2>
+        <dl class="row csv-meta-list mb-0">
+          <dt class="col-sm-4">元ファイル名</dt>
+          <dd class="col-sm-8"><%= @original_filename %></dd>
+
+          <dt class="col-sm-4">加工前行数</dt>
+          <dd class="col-sm-8"><%= @result[:rows_before] %> 行</dd>
+
+          <dt class="col-sm-4">加工後行数</dt>
+          <dd class="col-sm-8"><%= @result[:rows_after] %> 行</dd>
+
+          <dt class="col-sm-4">削除行数</dt>
+          <dd class="col-sm-8"><%= @result[:rows_removed] %> 行</dd>
+
+          <dt class="col-sm-4">出力列数</dt>
+          <dd class="col-sm-8"><%= @result[:columns_count] %> 列</dd>
+
+          <dt class="col-sm-4">出力文字コード</dt>
+          <dd class="col-sm-8"><%= csv_output_encoding_label(@result[:output_encoding]) %></dd>
+        </dl>
+      </div>
+    </div>
+
+    <% if @result[:warnings].present? %>
+      <div class="alert alert-warning">
+        <h2 class="h6 alert-heading">警告</h2>
+        <ul class="mb-0">
+          <% @result[:warnings].each do |warning| %>
+            <li><%= warning %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="d-flex flex-wrap gap-2">
+      <%= link_to "加工後 CSV をダウンロード",
+                  download_csv_file_path(token: params[:token]),
+                  class: "btn btn-primary" %>
+      <%= link_to "最初からやり直す", root_path, class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
+</div>

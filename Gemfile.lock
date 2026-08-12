@@ -168,6 +168,11 @@ GEM
     parser (3.3.12.0)
       ast (~> 2.4.1)
       racc
+    posthog-rails (3.18.1)
+      posthog-ruby (= 3.22.0)
+      railties (>= 5.2.0)
+    posthog-ruby (3.22.0)
+      concurrent-ruby (~> 1)
     pp (0.6.4)
       prettyprint
     prettyprint (0.2.0)
@@ -328,6 +333,8 @@ DEPENDENCIES
   capybara
   debug
   importmap-rails
+  posthog-rails
+  posthog-ruby
   puma (>= 5.0)
   rails (~> 7.2.3, >= 7.2.3.2)
   rubocop-rails-omakase

@@ -15,4 +15,5 @@ WORKDIR /rails
 
 ENV BUNDLE_PATH=/usr/local/bundle
 
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 CMD ["bin/rails", "server", "-b", "0.0.0.0"]

@@ -8,6 +8,9 @@ services:
       - bundle_cache:/usr/local/bundle
     environment:
       RAILS_ENV: development
+      # POSTHOG_API_KEY: your_project_api_key
+      # POSTHOG_HOST: https://us.i.posthog.com
+      # POSTHOG_ENABLED: "true"
     stdin_open: true
     tty: true
 

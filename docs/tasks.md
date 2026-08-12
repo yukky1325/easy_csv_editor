@@ -60,7 +60,7 @@
 | **対象ファイル** | `config/initializers/csv_tool.rb`, `.gitignore` |
 | **動作確認方法** | `docker compose run --rm web bin/rails runner "puts CsvTool::MAX_FILE_SIZE"` |
 | **注意点** | 定数は設計書 §26 に準拠 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -75,7 +75,7 @@
 | **対象ファイル** | `config/routes.rb` |
 | **動作確認方法** | `docker compose run --rm web bin/rails routes \| grep csv` |
 | **注意点** | 設計書 §27 のルーティング案に準拠 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-007: CsvFilesController スケルトン作成
 
@@ -86,11 +86,7 @@
 | **対象ファイル** | `app/controllers/csv_files_controller.rb` |
 | **動作確認方法** | `bin/rails routes` + ブラウザまたは request テスト |
 | **注意点** | ロジックはまだ書かない |
-| **ステータス** | pending |
-
----
-
-## アップロード画面
+| **ステータス** | done |
 
 ### T-008: アップロード画面（画面1）View 作成
 
@@ -101,7 +97,7 @@
 | **対象ファイル** | `app/views/csv_files/new.html.erb`, `app/views/layouts/application.html.erb` |
 | **動作確認方法** | ブラウザで `/` を開く |
 | **注意点** | `multipart/form-data` の form を使用 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -116,7 +112,7 @@
 | **対象ファイル** | `app/services/csv_tool/errors.rb` |
 | **動作確認方法** | `bin/rails test test/services/csv_tool/errors_test.rb`（または runner） |
 | **注意点** | 設計書 §20.1 の例外一覧を網羅 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-010: CsvFileValidator 実装
 
@@ -127,7 +123,7 @@
 | **対象ファイル** | `app/services/csv_tool/csv_file_validator.rb`, `test/services/csv_tool/csv_file_validator_test.rb` |
 | **動作確認方法** | `bin/rails test test/services/csv_tool/csv_file_validator_test.rb` |
 | **注意点** | MIME タイプは信用しない |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-011: CsvUploadForm 実装
 
@@ -138,7 +134,7 @@
 | **対象ファイル** | `app/forms/csv_upload_form.rb`, `test/forms/csv_upload_form_test.rb` |
 | **動作確認方法** | `bin/rails test test/forms/csv_upload_form_test.rb` |
 | **注意点** | ActiveModel::Model を使用 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -153,7 +149,7 @@
 | **対象ファイル** | `app/services/csv_tool/csv_encoding_detector.rb`, `test/services/csv_tool/csv_encoding_detector_test.rb` |
 | **動作確認方法** | テスト内で各 encoding の Tempfile を生成して検証 |
 | **注意点** | 判定不能時は EncodingDetectionError |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -168,7 +164,7 @@
 | **対象ファイル** | `app/services/csv_tool/csv_reader.rb`, `test/services/csv_tool/csv_reader_test.rb`, `test/fixtures/files/sample_utf8.csv` |
 | **動作確認方法** | `bin/rails test test/services/csv_tool/csv_reader_test.rb` |
 | **注意点** | カンマ・クォート・改行含む値のテストを含める |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-014: CsvTempfileStore 実装
 
@@ -179,7 +175,7 @@
 | **対象ファイル** | `app/services/csv_tool/csv_tempfile_store.rb`, `test/services/csv_tool/csv_tempfile_store_test.rb` |
 | **動作確認方法** | 単体テスト |
 | **注意点** | 元ファイル名をパスに使わない |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -194,7 +190,7 @@
 | **対象ファイル** | `app/controllers/csv_files_controller.rb` |
 | **動作確認方法** | ブラウザで CSV アップロード |
 | **注意点** | この段階では UTF-8 のみ。エラー処理は最小限 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-016: プレビュー画面（画面2）View 作成
 
@@ -205,7 +201,7 @@
 | **対象ファイル** | `app/views/csv_files/preview.html.erb`, `app/helpers/csv_files_helper.rb` |
 | **動作確認方法** | ブラウザでプレビュー確認 |
 | **注意点** | HTML エスケープ必須。大量データを表示しない |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -220,7 +216,7 @@
 | **対象ファイル** | `app/services/csv_tool/csv_processor.rb`, `test/services/csv_tool/csv_processor_test.rb` |
 | **動作確認方法** | 単体テスト + 手動確認 |
 | **注意点** | 行削除はこの段階では未実装 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-018: CsvProcessingForm 実装
 
@@ -231,7 +227,7 @@
 | **対象ファイル** | `app/forms/csv_processing_form.rb`, `test/forms/csv_processing_form_test.rb` |
 | **動作確認方法** | 単体テスト |
 | **注意点** | Strong Parameters と連携 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -246,7 +242,7 @@
 | **対象ファイル** | `app/services/csv_tool/csv_processor.rb`, テスト追加 |
 | **動作確認方法** | 空行含む CSV でテスト |
 | **注意点** | 空白のみのセルも空とみなす |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-020: 指定列空欄行削除の実装
 
@@ -257,7 +253,7 @@
 | **対象ファイル** | `app/services/csv_tool/csv_processor.rb`, テスト追加 |
 | **動作確認方法** | 単体テスト（0003 行削除確認） |
 | **注意点** | 存在しない列指定時は ColumnNotFoundError |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -272,7 +268,7 @@
 | **対象ファイル** | `app/services/csv_tool/csv_writer.rb`, `test/services/csv_tool/csv_writer_test.rb` |
 | **動作確認方法** | 単体テスト |
 | **注意点** | 改行は CRLF |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-022: UTF-8 BOM 付き出力対応
 
@@ -283,7 +279,7 @@
 | **対象ファイル** | `csv_writer.rb`, テスト追加 |
 | **動作確認方法** | バイナリ先頭バイト検証テスト |
 | **注意点** | Excel 互換 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-023: Windows-31J 出力対応
 
@@ -294,7 +290,7 @@
 | **対象ファイル** | `csv_writer.rb`, テスト追加 |
 | **動作確認方法** | 非対応文字含む CSV でテスト |
 | **注意点** | アプリが異常終了しないこと |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -309,7 +305,7 @@
 | **対象ファイル** | `app/services/csv_tool/csv_processing_result.rb`, テスト |
 | **動作確認方法** | 単体テスト |
 | **注意点** | 加工後 0 件の場合は EmptyResultError |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-025: 加工処理（process action）実装
 
@@ -320,7 +316,7 @@
 | **対象ファイル** | `app/controllers/csv_files_controller.rb` |
 | **動作確認方法** | ブラウザで一連の加工フロー |
 | **注意点** | セッション token 検証 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -335,7 +331,7 @@
 | **対象ファイル** | `app/views/csv_files/result.html.erb` |
 | **動作確認方法** | ブラウザ確認 |
 | **注意点** | warnings がある場合のみ警告ブロック表示 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-027: ダウンロード処理（download action）実装
 
@@ -346,7 +342,7 @@
 | **対象ファイル** | `app/controllers/csv_files_controller.rb`, `app/helpers/csv_files_helper.rb` |
 | **動作確認方法** | ブラウザでダウンロード。ファイル名・encoding 確認 |
 | **注意点** | セッション token 一致検証 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -361,7 +357,7 @@
 | **対象ファイル** | `app/controllers/csv_files_controller.rb`, `app/controllers/application_controller.rb` |
 | **動作確認方法** | 意図的に不正ファイルをアップロード |
 | **注意点** | UnexpectedError はログに詳細、画面は汎用メッセージ |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-029: エラー表示 UI 調整
 
@@ -372,7 +368,7 @@
 | **対象ファイル** | `app/views/shared/_flash.html.erb`, 各 view |
 | **動作確認方法** | 各エラーケースで UI 確認 |
 | **注意点** | 成功メッセージ（flash[:notice]）も対応 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -387,7 +383,7 @@
 | **対象ファイル** | `app/services/csv_tool/csv_writer.rb`, テスト追加 |
 | **動作確認方法** | `=1+1` 等を含む CSV の出力テスト |
 | **注意点** | 設計書 §22 に準拠 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-031: 一時ファイルクリーンアップ Rake タスク
 
@@ -398,7 +394,7 @@
 | **対象ファイル** | `lib/tasks/csv_tool.rake` |
 | **動作確認方法** | 古いファイルを配置して rake 実行 |
 | **注意点** | 本番 cron 設定は README に記載のみ |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-032: セッション・token 検証強化
 
@@ -409,7 +405,7 @@
 | **対象ファイル** | `app/controllers/csv_files_controller.rb`, テスト |
 | **動作確認方法** | 不正 token でのアクセステスト |
 | **注意点** | UUID 推測困難だがセッション検証は必須 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -424,7 +420,7 @@
 | **対象ファイル** | `test/forms/`, `test/services/csv_tool/` |
 | **動作確認方法** | `bin/rails test` |
 | **注意点** | 個人情報なしの fixture のみ |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-034: CSV 読み込み・加工テスト拡充
 
@@ -435,7 +431,7 @@
 | **対象ファイル** | `test/services/csv_tool/` |
 | **動作確認方法** | `bin/rails test` |
 | **注意点** | encoding 別ファイルはテスト内生成 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-035: 文字コード変換テスト
 
@@ -446,7 +442,7 @@
 | **対象ファイル** | `test/services/csv_tool/csv_writer_test.rb` |
 | **動作確認方法** | `bin/rails test` |
 | **注意点** | 置換時 warnings の検証を含む |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-036: Controller / Request テスト
 
@@ -457,7 +453,7 @@
 | **対象ファイル** | `test/controllers/csv_files_controller_test.rb` |
 | **動作確認方法** | `bin/rails test test/controllers/` |
 | **注意点** | ファイルアップロードは fixture 使用 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -472,7 +468,7 @@
 | **対象ファイル** | `app/views/csv_files/preview.html.erb` |
 | **動作確認方法** | ブラウザ操作 |
 | **注意点** | 列選択はチェックボックス（複数選択） |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-038: 全体 UI 調整
 
@@ -483,7 +479,7 @@
 | **対象ファイル** | `app/views/csv_files/*.erb`, `application.html.erb` |
 | **動作確認方法** | ブラウザで全フロー確認 |
 | **注意点** | 過剰な装飾は避ける |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -498,7 +494,7 @@
 | **対象ファイル** | `README.md` |
 | **動作確認方法** | README の手順通りに `docker compose up --build` でセットアップを試す |
 | **注意点** | スクリーンショット掲載位置はプレースホルダで可。ホスト直接起動手順は不要 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ---
 
@@ -513,7 +509,7 @@
 | **対象ファイル** | 全体 |
 | **動作確認方法** | テスト + 手動フロー |
 | **注意点** | 個人情報含むサンプルデータがないことを確認 |
-| **ステータス** | pending |
+| **ステータス** | done |
 
 ### T-041: GitHub リポジトリ公開準備
 

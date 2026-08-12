@@ -1,0 +1,403 @@
+<% content_for :title, "CSVプレビュー" %>
+
+<%= render "shared/page_header",
+           title: "CSVプレビュー・加工条件",
+           subtitle: "内容を確認し、出力する列と加工条件を指定してください。",
+           actions: link_to("戻る", root_path, class: "btn btn-sm btn-outline-secondary") %>
+
+<% if @warnings.present? %>
+  <div class="alert alert-warning py-2 mb-3">
+    <h2 class="h6 alert-heading mb-2">読み込み時の警告</h2>
+    <ul class="mb-0 small">
+      <% @warnings.each do |warning| %>
+        <li><%= warning %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with url: process_csv_file_path(token: params[:token]),
+              scope: :csv_processing_form,
+              method: :post,
+              local: true,
+              html: {
+                data: {
+                  controller: "csv-preview",
+                  action: "submit->csv-preview#serializeRows"
+                }
+              } do |f| %>
+  <%= f.hidden_field :edited_rows_json, value: "", data: { csv_preview_target: "editedRowsJson" } %>
+  <%= f.hidden_field :column_order, value: (0...@headers.size).to_a.to_json, data: { csv_preview_target: "columnOrder" } %>
+  <%= f.hidden_field :column_labels_json, value: "", data: { csv_preview_target: "columnLabelsJson" } %>
+  <div class="card csv-card csv-file-summary mb-4">
+    <div class="card-body">
+      <div class="csv-stat-grid">
+        <div class="csv-stat">
+          <span class="csv-stat-label">ファイル名</span>
+          <span class="csv-stat-value"><%= @original_filename %></span>
+        </div>
+        <div class="csv-stat">
+          <span class="csv-stat-label">文字コード</span>
+          <span class="csv-stat-value"><%= csv_output_encoding_label(@detected_encoding) %></span>
+        </div>
+        <div class="csv-stat">
+          <span class="csv-stat-label">行数・列数</span>
+          <span class="csv-stat-value"><%= @row_count %> 行 × <%= @column_count %> 列</span>
+        </div>
+        <div class="csv-stat">
+          <span class="csv-stat-label">プレビュー</span>
+          <span class="csv-stat-value">全 <%= @row_count %> 行を表示</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="csv-section">
+    <div class="csv-section-header">
+      <h2 class="h6 mb-1">列の抽出・データ編集</h2>
+      <p class="text-muted small mb-0">
+        列見出し・行番号の「出力」で出力の有無を選び、列名行とデータ行のセルを直接編集できます。← → で列の順序を入れ替えられます。
+      </p>
+    </div>
+    <div class="csv-toolbar mb-3">
+      <div class="csv-toolbar-groups">
+        <div class="csv-toolbar-group">
+          <span class="csv-toolbar-group-label">列</span>
+          <button type="button" class="btn btn-sm btn-outline-primary" data-action="csv-preview#selectAllColumns">
+            全選択
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-action="csv-preview#deselectAllColumns">
+            全解除
+          </button>
+        </div>
+        <div class="csv-toolbar-group">
+          <span class="csv-toolbar-group-label">行</span>
+          <button type="button" class="btn btn-sm btn-outline-primary" data-action="csv-preview#selectAllRows">
+            全選択
+          </button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" data-action="csv-preview#deselectAllRows">
+            全解除
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <details class="csv-panel mb-3 csv-row-sort-panel">
+    <summary>行の並べ替え（ソート）</summary>
+    <div class="card-body">
+      <p class="text-muted small mb-3">
+        出力に選択した列の値を基準に、データ行の順序だけを並べ替えます（列の位置は変わりません）。
+      </p>
+      <div class="row g-3 align-items-end">
+        <div class="col-md-5">
+          <label class="form-label small mb-1" for="row_sort_column">並べ替えの基準列</label>
+          <select id="row_sort_column"
+                  class="form-select form-select-sm"
+                  data-csv-preview-target="rowSortColumn">
+          </select>
+          <div class="form-text">「出力」にチェックが入った列のみ選べます。</div>
+        </div>
+        <div class="col-md-7">
+          <div class="d-flex flex-wrap gap-2">
+            <button type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    data-row-sort-mode="text-asc"
+                    data-action="csv-preview#sortRows">
+              昇順（A→Z）
+            </button>
+            <button type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    data-row-sort-mode="text-desc"
+                    data-action="csv-preview#sortRows">
+              降順（Z→A）
+            </button>
+            <button type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    data-row-sort-mode="number-asc"
+                    data-action="csv-preview#sortRows">
+              数値として 昇順
+            </button>
+            <button type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    data-row-sort-mode="number-desc"
+                    data-action="csv-preview#sortRows">
+              数値として 降順
+            </button>
+            <button type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    data-action="csv-preview#resetRowOrder">
+              元の行順に戻す
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <div class="csv-workspace mb-3">
+    <div class="csv-spreadsheet-scroll">
+      <table class="csv-spreadsheet"
+             data-csv-preview-target="spreadsheet"
+             style="width: <%= csv_spreadsheet_table_width(@headers.size) %>px">
+        <colgroup>
+          <col class="csv-col-row-num" style="width: <%= CsvFilesHelper::CSV_SPREADSHEET_ROW_NUM_WIDTH %>px">
+          <% @headers.each do %>
+            <col class="csv-col-data" style="width: <%= CsvFilesHelper::CSV_SPREADSHEET_COL_WIDTH %>px">
+          <% end %>
+        </colgroup>
+        <thead>
+          <tr class="csv-header-row">
+            <th scope="col" class="csv-row-num csv-row-num-header csv-corner-cell">
+              <span class="csv-corner-label">出力</span>
+            </th>
+            <% @headers.each_with_index do |header, index| %>
+              <th scope="col"
+                  class="csv-header-cell"
+                  data-csv-preview-target="headerCell"
+                  data-column-index="<%= index %>">
+                <div class="csv-header-toolbar">
+                  <div class="csv-header-toolbar-top">
+                    <div class="csv-header-select">
+                      <%= check_box_tag "csv_processing_form[selected_columns][]",
+                                        index,
+                                        true,
+                                        id: "selected_column_#{index}",
+                                        class: "form-check-input",
+                                        data: {
+                                          csv_preview_target: "checkbox",
+                                          action: "change->csv-preview#syncAll"
+                                        } %>
+                      <label class="form-check-label mb-0" for="selected_column_<%= index %>">
+                        出力
+                      </label>
+                    </div>
+                    <span class="csv-col-letter" data-csv-preview-target="columnLabel"><%= csv_column_label(index) %></span>
+                  </div>
+                  <div class="csv-column-move">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary csv-column-move-btn"
+                            title="左へ移動"
+                            data-action="csv-preview#moveColumnLeft"
+                            aria-label="列を左へ移動">
+                      ←
+                    </button>
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary csv-column-move-btn"
+                            title="右へ移動"
+                            data-action="csv-preview#moveColumnRight"
+                            aria-label="列を右へ移動">
+                      →
+                    </button>
+                  </div>
+                </div>
+              </th>
+            <% end %>
+          </tr>
+          <tr class="csv-column-name-row">
+            <th scope="row" class="csv-row-num csv-corner-cell">
+              <span class="csv-corner-label">列名</span>
+            </th>
+            <% @headers.each_with_index do |header, index| %>
+              <th scope="col"
+                  class="csv-column-name-cell<%= header.blank? ? " csv-column-name-empty" : "" %>"
+                  contenteditable="true"
+                  spellcheck="false"
+                  title="元の列名: <%= header.presence || "（空欄）" %>"
+                  data-csv-preview-target="previewLabel"
+                  data-column-index="<%= index %>"
+                  data-original-header="<%= header %>"
+                  data-action="input->csv-preview#updateColumnName focus->csv-preview#focusCell blur->csv-preview#blurColumnName">
+                <%= header %>
+              </th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @rows.present? %>
+            <% @rows.each_with_index do |row, index| %>
+              <tr data-csv-preview-target="dataRow">
+                <th scope="row" class="csv-row-num csv-row-select-cell">
+                  <div class="csv-row-select">
+                    <%= tag.input type: "checkbox",
+                                  checked: true,
+                                  id: "selected_row_#{index}",
+                                  class: "form-check-input",
+                                  data: {
+                                    csv_preview_target: "rowCheckbox",
+                                    action: "change->csv-preview#syncRowOutput"
+                                  } %>
+                    <label class="csv-row-number-label small text-muted mb-0"
+                           for="selected_row_<%= index %>"
+                           data-csv-preview-target="rowNumberLabel"><%= index + 3 %></label>
+                  </div>
+                </th>
+                <% @headers.each_with_index do |header, column_index| %>
+                  <td class="csv-data-cell<%= row[column_index].blank? ? " csv-data-cell-empty" : "" %>"
+                      contenteditable="true"
+                      spellcheck="false"
+                      data-csv-preview-target="dataCell"
+                      data-column-index="<%= column_index %>"
+                      data-row-index="<%= index %>"
+                      data-original-value="<%= row[column_index].to_s %>"
+                      data-action="input->csv-preview#markCellEdited focus->csv-preview#focusCell blur->csv-preview#blurCell"
+                      title="クリックして編集"><%= row[column_index].presence %></td>
+                <% end %>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <th scope="row" class="csv-row-num">3</th>
+              <td colspan="<%= @headers.size %>" class="csv-cell-empty">データ行がありません</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="csv-legend" aria-label="表の凡例">
+      <span class="csv-legend-item">
+        <span class="csv-legend-swatch csv-legend-swatch-changed" aria-hidden="true"></span>
+        列名・データの変更あり
+      </span>
+      <span class="csv-legend-item">
+        <span class="csv-legend-swatch csv-legend-swatch-muted" aria-hidden="true"></span>
+        出力なし
+      </span>
+      <span class="csv-legend-item">
+        <span class="csv-legend-swatch csv-legend-swatch-data" aria-hidden="true"></span>
+        編集可能なデータセル
+      </span>
+    </div>
+  </div>
+
+  <details class="csv-panel mb-4 csv-bulk-rename-panel">
+    <summary>列名の一括編集（接頭辞・置換など）</summary>
+    <div class="card-body">
+      <p class="text-muted small">
+        選択中の列に対して、列名行とデータ行のセルへ一括で反映します。
+      </p>
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <h3 class="h6">接頭辞・接尾辞</h3>
+          <div class="mb-2">
+            <label class="form-label small mb-1" for="bulk_prefix">接頭辞</label>
+            <input type="text"
+                   id="bulk_prefix"
+                   class="form-control form-control-sm"
+                   placeholder="例: new_"
+                   data-csv-preview-target="bulkPrefix">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small mb-1" for="bulk_suffix">接尾辞</label>
+            <input type="text"
+                   id="bulk_suffix"
+                   class="form-control form-control-sm"
+                   placeholder="例: _v2"
+                   data-csv-preview-target="bulkSuffix">
+          </div>
+          <button type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  data-action="csv-preview#applyPrefixSuffix">
+            選択中の列に適用
+          </button>
+        </div>
+
+        <div class="col-lg-6">
+          <h3 class="h6">文字列の置換</h3>
+          <p class="text-muted small mb-2">
+            選択中の列について、出力列名とデータ行のセル内容の両方に置換を適用します。
+          </p>
+          <div class="mb-2">
+            <label class="form-label small mb-1" for="bulk_find">検索</label>
+            <input type="text"
+                   id="bulk_find"
+                   class="form-control form-control-sm"
+                   data-csv-preview-target="bulkFind">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small mb-1" for="bulk_replace">置換後</label>
+            <input type="text"
+                   id="bulk_replace"
+                   class="form-control form-control-sm"
+                   data-csv-preview-target="bulkReplace">
+          </div>
+          <button type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  data-action="csv-preview#applyFindReplace">
+            選択中の列に適用
+          </button>
+        </div>
+
+        <div class="col-12">
+          <h3 class="h6">列名を行単位で一括指定</h3>
+          <p class="text-muted small mb-2">
+            選択中の列の順（表の左から）に、1行ずつ出力列名を入力します。
+          </p>
+          <textarea id="bulk_lines"
+                    class="form-control form-control-sm font-monospace"
+                    rows="4"
+                    placeholder="会員ID&#10;氏名&#10;電話番号"
+                    data-csv-preview-target="bulkLines"></textarea>
+          <div class="text-danger small mt-2 d-none" data-csv-preview-target="bulkLinesError"></div>
+          <div class="d-flex flex-wrap gap-2 mt-2">
+            <button type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    data-action="csv-preview#applyBulkLines">
+              選択中の列に適用
+            </button>
+            <button type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    data-action="csv-preview#resetAllLabels">
+              選択中の列を元の列名に戻す
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <div class="card csv-card mb-4">
+    <div class="card-header">
+      <h2 class="h6 mb-0">加工オプション</h2>
+    </div>
+    <div class="card-body">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <h3 class="h6 mb-3">行の削除</h3>
+          <div class="form-check mb-3">
+            <%= f.check_box :remove_empty_rows, { class: "form-check-input", checked: true }, "1", "0" %>
+            <%= f.label :remove_empty_rows, "完全な空行を削除する", class: "form-check-label" %>
+          </div>
+          <%= f.label :blank_column, "空欄の行を削除（対象列）", class: "form-label" %>
+          <%= f.select :blank_column,
+                       options_for_select(csv_blank_column_options(@headers)),
+                       {},
+                       class: "form-select form-select-sm",
+                       data: { csv_preview_target: "blankColumnSelect" } %>
+          <div class="form-text">指定した列が空欄（空白のみを含む）の行を削除します。対象列は表の列記号（A〜）で選択します。</div>
+        </div>
+
+        <div class="col-md-6">
+          <h3 class="h6 mb-3">出力文字コード</h3>
+          <div class="csv-encoding-options">
+            <% CsvTool::SUPPORTED_OUTPUT_ENCODINGS.each_with_index do |encoding, index| %>
+              <div class="form-check">
+                <%= f.radio_button :output_encoding,
+                                   encoding,
+                                   checked: encoding == "UTF-8",
+                                   id: "output_encoding_#{index}",
+                                   class: "form-check-input" %>
+                <%= f.label :output_encoding, csv_output_encoding_label(encoding), value: encoding, class: "form-check-label" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2 mt-4 pt-3 border-top">
+        <%= f.submit "加工を実行", class: "btn btn-primary" %>
+        <%= link_to "戻る", root_path, class: "btn btn-outline-secondary" %>
+      </div>
+    </div>
+  </div>
+<% end %>

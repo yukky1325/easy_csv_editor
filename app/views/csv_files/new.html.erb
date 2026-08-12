@@ -1,0 +1,44 @@
+<% content_for :title, "CSVアップロード" %>
+
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <%= render "shared/page_header",
+               title: "CSVファイルのアップロード",
+               subtitle: "CSVファイルをアップロードし、列の抽出・不要行の削除・文字コード変換を行ったうえで、加工後のCSVをダウンロードできます。" %>
+
+    <div class="card csv-card">
+      <div class="card-body p-4">
+        <%= form_with url: csv_files_path, scope: :csv_upload_form, local: true, html: { multipart: true } do |f| %>
+          <div class="csv-upload-dropzone mb-3">
+            <%= f.label :file, "CSVファイル", class: "form-label fw-semibold" %>
+            <%= f.file_field :file, accept: ".csv", class: "form-control", required: true %>
+            <div class="form-text mt-2 mb-0">ドラッグ＆ドロップは未対応です。ファイルを選択してアップロードしてください。</div>
+          </div>
+
+          <%= f.submit "アップロード", class: "btn btn-primary px-4" %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="card csv-card mt-4">
+      <div class="card-body">
+        <h2 class="h5 card-title">対応形式</h2>
+        <ul class="mb-0">
+          <li>拡張子: <code><%= CsvTool::ALLOWED_EXTENSION %></code></li>
+          <li>文字コード: <%= csv_supported_input_encodings_label %></li>
+          <li>最大ファイルサイズ: <strong><%= csv_max_file_size_label %></strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert alert-warning mt-4" role="alert">
+      <h2 class="h6 alert-heading">注意事項</h2>
+      <ul class="mb-0 small">
+        <li>アップロードしたCSVの内容はデータベースに保存されません（一時ファイルとして処理されます）。</li>
+        <li>個人情報を含むファイルの取り扱いには十分ご注意ください。</li>
+        <li><%= csv_max_file_size_label %>を超えるファイルはアップロードできません。</li>
+        <li>加工完了後は、速やかにダウンロードしてください。</li>
+      </ul>
+    </div>
+  </div>
+</div>
