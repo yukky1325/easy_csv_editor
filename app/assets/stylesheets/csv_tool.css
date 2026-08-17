@@ -306,3 +306,132 @@ body {
     margin-bottom: -0.25rem;
   }
 }
+
+/* Landing page */
+
+.landing-hero {
+  margin-bottom: 3rem;
+  padding: 1rem 0 0.5rem;
+}
+
+.landing-eyebrow {
+  color: var(--csv-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.landing-title {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.landing-lead {
+  color: var(--csv-text-muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 38rem;
+}
+
+.landing-hero-card {
+  padding: 1.25rem 1.35rem;
+  border: 1px solid var(--csv-border);
+  border-radius: var(--csv-radius);
+  background: var(--csv-surface);
+  box-shadow: var(--csv-shadow-md);
+}
+
+.landing-hero-card-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--csv-border);
+}
+
+.landing-hero-card-row-last {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.landing-hero-card-label {
+  color: var(--csv-text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.landing-hero-card-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.landing-section {
+  margin-bottom: 3rem;
+}
+
+.landing-section-header {
+  margin-bottom: 1.25rem;
+}
+
+.landing-feature-card {
+  padding: 1.15rem 1.25rem;
+  border: 1px solid var(--csv-border);
+  border-radius: var(--csv-radius);
+  background: var(--csv-surface);
+  box-shadow: var(--csv-shadow-sm);
+}
+
+.landing-feature-card .h6 {
+  font-weight: 700;
+}
+
+.landing-trust-list {
+  padding-left: 1.2rem;
+  color: var(--csv-text-muted);
+}
+
+.landing-trust-list li + li {
+  margin-top: 0.5rem;
+}
+
+.landing-step-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.landing-step-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--csv-border);
+  border-radius: var(--csv-radius-sm);
+  background: var(--csv-surface);
+  box-shadow: var(--csv-shadow-sm);
+}
+
+.landing-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: var(--csv-primary-soft);
+  color: var(--csv-primary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+@media (max-width: 575.98px) {
+  .landing-hero-actions .btn-lg {
+    width: 100%;
+  }
+}

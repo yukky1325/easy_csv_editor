@@ -3,8 +3,8 @@
 require "test_helper"
 
 class CsvFilesControllerTest < ActionDispatch::IntegrationTest
-  test "GET / shows upload page" do
-    get root_url
+  test "GET /upload shows upload page" do
+    get new_csv_file_url
     assert_response :success
     assert_match "CSVファイルのアップロード", response.body
     assert_select "form[enctype=?]", "multipart/form-data"
@@ -49,7 +49,7 @@ class CsvFilesControllerTest < ActionDispatch::IntegrationTest
   test "POST /csv_files without file redirects to root with alert" do
     post csv_files_url, params: { csv_upload_form: { file: nil } }
 
-    assert_redirected_to root_path
+    assert_redirected_to new_csv_file_path
     assert_equal "ファイルが選択されていません", flash[:alert]
   end
 
@@ -58,7 +58,7 @@ class CsvFilesControllerTest < ActionDispatch::IntegrationTest
       csv_upload_form: { file: uploaded_csv("name,value\n", "sample.txt") }
     }
 
-    assert_redirected_to root_path
+    assert_redirected_to new_csv_file_path
     follow_redirect!
 
     assert_select ".alert-danger", text: /CSVファイル（\.csv）を選択してください/
@@ -69,7 +69,7 @@ class CsvFilesControllerTest < ActionDispatch::IntegrationTest
       csv_upload_form: { file: uploaded_csv("", "empty.csv") }
     }
 
-    assert_redirected_to root_path
+    assert_redirected_to new_csv_file_path
     follow_redirect!
 
     assert_select ".alert-danger", text: /CSV形式が正しくありません/
@@ -80,7 +80,7 @@ class CsvFilesControllerTest < ActionDispatch::IntegrationTest
       csv_upload_form: { file: uploaded_csv(",,\nfoo,bar\n", "no_header.csv") }
     }
 
-    assert_redirected_to root_path
+    assert_redirected_to new_csv_file_path
     assert_equal "ヘッダー行が見つかりません", flash[:alert]
     follow_redirect!
 
@@ -90,7 +90,7 @@ class CsvFilesControllerTest < ActionDispatch::IntegrationTest
   test "GET /csv_files/:token/preview without session redirects to root" do
     get preview_csv_file_url(token: SecureRandom.uuid)
 
-    assert_redirected_to root_path
+    assert_redirected_to new_csv_file_path
     assert_equal "セッションが切れました。最初からやり直してください", flash[:alert]
   end
 
@@ -99,7 +99,7 @@ class CsvFilesControllerTest < ActionDispatch::IntegrationTest
 
     get preview_csv_file_url(token: SecureRandom.uuid)
 
-    assert_redirected_to root_path
+    assert_redirected_to new_csv_file_path
     assert_equal "セッションが切れました。最初からやり直してください", flash[:alert]
   end
 
@@ -108,7 +108,7 @@ class CsvFilesControllerTest < ActionDispatch::IntegrationTest
 
     get preview_csv_file_url(token: "not-a-valid-token")
 
-    assert_redirected_to root_path
+    assert_redirected_to new_csv_file_path
     assert_equal "セッションが切れました。最初からやり直してください", flash[:alert]
   end
 
@@ -118,7 +118,7 @@ class CsvFilesControllerTest < ActionDispatch::IntegrationTest
 
     get preview_csv_file_url(token: token)
 
-    assert_redirected_to root_path
+    assert_redirected_to new_csv_file_path
     assert_equal "セッションが切れました。最初からやり直してください", flash[:alert]
   end
 
@@ -184,7 +184,7 @@ class CsvFilesControllerTest < ActionDispatch::IntegrationTest
 
     get download_csv_file_url(token: SecureRandom.uuid)
 
-    assert_redirected_to root_path
+    assert_redirected_to new_csv_file_path
     assert_equal "セッションが切れました。最初からやり直してください", flash[:alert]
   end
 

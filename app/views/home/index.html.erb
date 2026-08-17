@@ -1,8 +1,115 @@
-<div class="row">
-  <div class="col-lg-8">
-    <h1 class="h3 mb-3"><%= app_name %></h1>
-    <p class="text-muted">
-      CSV ファイルをアップロードし、列の抽出や不要行の削除、文字コード変換を行えます。
-    </p>
+<section class="landing-hero">
+  <div class="row align-items-center g-4 g-lg-5">
+    <div class="col-lg-7">
+      <p class="landing-eyebrow mb-2">ブラウザだけで完結</p>
+      <h1 class="landing-title mb-3"><%= app_display_name %></h1>
+      <p class="landing-lead mb-4">
+        CSV ファイルをアップロードし、列の抽出・行の削除・セル編集・文字コード変換を行ったうえで、
+        加工後の CSV をそのままダウンロードできます。インストール不要です。
+      </p>
+      <div class="d-flex flex-wrap gap-2 landing-hero-actions">
+        <%= link_to "CSVをアップロードして始める", new_csv_file_path, class: "btn btn-primary btn-lg px-4" %>
+        <%= link_to "できることを見る", "#features", class: "btn btn-outline-secondary btn-lg px-4" %>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="landing-hero-card">
+        <div class="landing-hero-card-row">
+          <span class="landing-hero-card-label">対応形式</span>
+          <span class="landing-hero-card-value"><code><%= CsvTool::ALLOWED_EXTENSION %></code></span>
+        </div>
+        <div class="landing-hero-card-row">
+          <span class="landing-hero-card-label">文字コード</span>
+          <span class="landing-hero-card-value"><%= csv_supported_input_encodings_label %></span>
+        </div>
+        <div class="landing-hero-card-row">
+          <span class="landing-hero-card-label">最大サイズ</span>
+          <span class="landing-hero-card-value"><%= csv_max_file_size_label %></span>
+        </div>
+        <div class="landing-hero-card-row landing-hero-card-row-last">
+          <span class="landing-hero-card-label">データ保存</span>
+          <span class="landing-hero-card-value">DBに保存しません</span>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
+
+<section id="features" class="landing-section">
+  <div class="landing-section-header">
+    <h2 class="h4 mb-2">できること</h2>
+    <p class="text-muted mb-0">Excel のように表を確認しながら、必要な加工をその場で行えます。</p>
+  </div>
+  <div class="row g-3 g-md-4">
+    <div class="col-md-6 col-lg-3">
+      <article class="landing-feature-card h-100">
+        <h3 class="h6 mb-2">列の抽出・並べ替え</h3>
+        <p class="text-muted small mb-0">出力する列を選び、列の順序を入れ替えられます。</p>
+      </article>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <article class="landing-feature-card h-100">
+        <h3 class="h6 mb-2">行の選択・削除・ソート</h3>
+        <p class="text-muted small mb-0">行単位の出力制御、空行削除、基準列による並べ替えに対応します。</p>
+      </article>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <article class="landing-feature-card h-100">
+        <h3 class="h6 mb-2">セル編集・列名変更</h3>
+        <p class="text-muted small mb-0">表上で直接編集し、接頭辞・置換などの一括変更も行えます。</p>
+      </article>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <article class="landing-feature-card h-100">
+        <h3 class="h6 mb-2">文字コード変換</h3>
+        <p class="text-muted small mb-0">UTF-8 や Shift_JIS など、用途に合わせた形式でダウンロードできます。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="landing-section">
+  <div class="landing-trust card csv-card">
+    <div class="card-body p-4">
+      <h2 class="h5 mb-3">安心して使える設計</h2>
+      <ul class="landing-trust-list mb-0">
+        <li>アップロードした CSV は一時ファイルとして処理され、データベースには保存されません。</li>
+        <li>加工完了後は、速やかにダウンロードしてください。</li>
+        <li>個人情報を含むファイルの取り扱いには十分ご注意ください。</li>
+      </ul>
+      <div class="mt-4">
+        <%= link_to "さっそく使ってみる", new_csv_file_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="landing-section landing-steps">
+  <div class="landing-section-header">
+    <h2 class="h4 mb-2">使い方</h2>
+    <p class="text-muted mb-0">3 ステップで完了します。</p>
+  </div>
+  <ol class="landing-step-list">
+    <li>
+      <span class="landing-step-number">1</span>
+      <div>
+        <strong>CSV をアップロード</strong>
+        <p class="text-muted small mb-0"><code><%= CsvTool::ALLOWED_EXTENSION %></code> 形式のファイルを選択します。</p>
+      </div>
+    </li>
+    <li>
+      <span class="landing-step-number">2</span>
+      <div>
+        <strong>内容を確認して加工</strong>
+        <p class="text-muted small mb-0">プレビュー画面で列・行の選択、編集、ソートなどを行います。</p>
+      </div>
+    </li>
+    <li>
+      <span class="landing-step-number">3</span>
+      <div>
+        <strong>ダウンロード</strong>
+        <p class="text-muted small mb-0">加工後の CSV をそのまま保存できます。</p>
+      </div>
+    </li>
+  </ol>
+</section>

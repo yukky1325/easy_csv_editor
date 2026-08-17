@@ -17,7 +17,7 @@ class CsvFilesController < ApplicationController
 
     unless form.valid?
       track_posthog("csv_upload_failed", error_type: form.errors[:file].first)
-      redirect_to root_path, alert: form.errors[:file].first
+      redirect_to new_csv_file_path, alert: form.errors[:file].first
       return
     end
 
@@ -181,7 +181,7 @@ class CsvFilesController < ApplicationController
     @csv_tool_session = csv_tool_session
 
     unless valid_session_token?
-      redirect_to root_path, alert: CsvTool::SessionExpiredError.new.user_message
+      redirect_to new_csv_file_path, alert: CsvTool::SessionExpiredError.new.user_message
       return
     end
 
@@ -198,7 +198,7 @@ class CsvFilesController < ApplicationController
   def ensure_upload_exists!
     return if CsvTool::CsvTempfileStore.new.exists?(params[:token])
 
-    redirect_to root_path, alert: CsvTool::SessionExpiredError.new.user_message
+    redirect_to new_csv_file_path, alert: CsvTool::SessionExpiredError.new.user_message
   end
 
   def csv_tool_session
@@ -271,13 +271,13 @@ class CsvFilesController < ApplicationController
   def redirect_with_csv_tool_alert(message)
     case action_name
     when "create", "preview"
-      redirect_to root_path, alert: message
+      redirect_to new_csv_file_path, alert: message
     when "run"
       redirect_to preview_csv_file_path(token: params[:token]), alert: message
     when "download"
       redirect_to result_csv_file_path(token: params[:token]), alert: message
     else
-      redirect_to root_path, alert: message
+      redirect_to new_csv_file_path, alert: message
     end
   end
 end

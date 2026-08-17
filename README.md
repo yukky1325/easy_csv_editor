@@ -175,7 +175,7 @@ PostHog 上では `csv_uploaded` → `preview_viewed` → `csv_processed` → `c
 docker compose run --rm web bin/rails csv_tool:cleanup
 ```
 
-本番環境で運用する場合は、cron 等で定期的に実行することを推奨します（Ver.1 では手順の記載のみ）。
+本番環境で運用する場合は、cron 等で定期的に実行することを推奨します。手順は [`docs/deploy.md`](docs/deploy.md) を参照してください。
 
 ## セッション管理
 
@@ -187,7 +187,7 @@ docker compose run --rm web bin/rails csv_tool:cleanup
 
 - **個人情報**: アップロードした CSV は一時ファイルとして扱われます。取り扱いには十分注意してください。
 - **CSV Injection**: Excel 等で数式として解釈されうる値（`=` `+` `-` `@` で始まるセル）には、出力時に先頭へ `'` を付与しています。完全な防御ではないため、信頼できない CSV の取り扱いには注意してください。
-- **本番デプロイ**: 本アプリは個人開発・学習目的の Ver.1 です。本番向けのデプロイ手順は含みません。
+- **本番デプロイ**: [`docs/deploy.md`](docs/deploy.md) に VPS（Ubuntu）への手順を記載しています。
 
 ## 技術スタック
 
@@ -205,6 +205,7 @@ docker compose run --rm web bin/rails csv_tool:cleanup
 
 - 設計書: [`docs/design.md`](docs/design.md)
 - タスク一覧: [`docs/tasks.md`](docs/tasks.md)
+- **本番デプロイ**: [`docs/deploy.md`](docs/deploy.md)
 
 ## ライセンス
 

@@ -61,7 +61,7 @@
       <%= link_to "加工後 CSV をダウンロード",
                   download_csv_file_path(token: params[:token]),
                   class: "btn btn-primary" %>
-      <%= link_to "最初からやり直す", root_path, class: "btn btn-outline-secondary" %>
+      <%= link_to "最初からやり直す", new_csv_file_path, class: "btn btn-outline-secondary" %>
     </div>
   </div>
 </div>

@@ -27,7 +27,20 @@
         data-posthog-distinct-id-value="<%= posthog_distinct_id %>">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <div class="container">
-        <%= link_to app_name, root_path, class: "navbar-brand mb-0 h1 text-decoration-none text-white" %>
+        <%= link_to app_display_name, root_path, class: "navbar-brand mb-0 h1 text-decoration-none text-white" %>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="メニューを開く">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+            <li class="nav-item">
+              <%= link_to "ホーム", root_path, class: "nav-link#{' active' if current_page?(root_path)}" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "CSVアップロード", new_csv_file_path, class: "nav-link#{' active' if current_page?(new_csv_file_path)}" %>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
 
@@ -38,7 +51,7 @@
 
     <footer class="site-footer">
       <div class="container">
-        <p class="mb-0"><%= app_name %> — アップロードしたCSVは一時ファイルとして処理され、データベースには保存されません。</p>
+        <p class="mb-0"><%= app_display_name %> — アップロードしたCSVは一時ファイルとして処理され、データベースには保存されません。</p>
       </div>
     </footer>
 

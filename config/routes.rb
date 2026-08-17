@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  root "csv_files#new"
+  root "home#index"
+  get "upload", to: "csv_files#new", as: :new_csv_file
 
   resources :csv_files, only: [], param: :token do
     member do
