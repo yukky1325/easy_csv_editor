@@ -28,9 +28,9 @@ body {
 }
 
 .navbar-brand {
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .csv-page-header {
@@ -280,11 +280,97 @@ body {
   line-height: 1.2;
 }
 
+.csv-upload-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.85rem;
+}
+
 .csv-upload-dropzone {
-  padding: 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 10.5rem;
+  padding: 1.75rem 1.25rem;
   border: 1px dashed var(--csv-border-strong);
   border-radius: var(--csv-radius-sm);
   background: #f8fafc;
+  text-align: center;
+  cursor: pointer;
+}
+
+.csv-upload-dropzone:hover,
+.csv-upload-dropzone.is-dragover {
+  border-color: var(--csv-primary);
+  background: var(--csv-primary-soft);
+}
+
+.csv-upload-dropzone.has-file {
+  border-style: solid;
+  background: var(--csv-surface);
+}
+
+.csv-upload-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.csv-upload-prompt,
+.csv-upload-filename {
+  pointer-events: none;
+  max-width: 100%;
+}
+
+.csv-upload-prompt {
+  color: var(--csv-text);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.csv-upload-filename {
+  color: var(--csv-text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.csv-upload-meta {
+  margin: 0;
+  color: var(--csv-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.csv-upload-submit {
+  align-self: flex-start;
+  min-width: 10.5rem;
+  padding: 0 1.4rem;
+  background: #9c3b22;
+  color: #fffdfb;
+  box-shadow: 0 8px 20px rgba(125, 45, 25, 0.28);
+}
+
+.csv-upload-submit:hover {
+  background: #7d2d19;
+  color: #fffdfb;
+}
+
+.csv-upload-page-note {
+  margin-top: 1.5rem;
+  color: var(--csv-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
 }
 
 .site-footer {
@@ -305,133 +391,13 @@ body {
     width: 100%;
     margin-bottom: -0.25rem;
   }
-}
 
-/* Landing page */
+  .csv-upload-dropzone {
+    min-height: 8.5rem;
+    padding: 1.25rem 1rem;
+  }
 
-.landing-hero {
-  margin-bottom: 3rem;
-  padding: 1rem 0 0.5rem;
-}
-
-.landing-eyebrow {
-  color: var(--csv-primary);
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-
-.landing-title {
-  font-size: clamp(2rem, 4vw, 2.75rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-}
-
-.landing-lead {
-  color: var(--csv-text-muted);
-  font-size: 1.05rem;
-  line-height: 1.7;
-  max-width: 38rem;
-}
-
-.landing-hero-card {
-  padding: 1.25rem 1.35rem;
-  border: 1px solid var(--csv-border);
-  border-radius: var(--csv-radius);
-  background: var(--csv-surface);
-  box-shadow: var(--csv-shadow-md);
-}
-
-.landing-hero-card-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.65rem 0;
-  border-bottom: 1px solid var(--csv-border);
-}
-
-.landing-hero-card-row-last {
-  border-bottom: 0;
-  padding-bottom: 0;
-}
-
-.landing-hero-card-label {
-  color: var(--csv-text-muted);
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.landing-hero-card-value {
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-align: right;
-}
-
-.landing-section {
-  margin-bottom: 3rem;
-}
-
-.landing-section-header {
-  margin-bottom: 1.25rem;
-}
-
-.landing-feature-card {
-  padding: 1.15rem 1.25rem;
-  border: 1px solid var(--csv-border);
-  border-radius: var(--csv-radius);
-  background: var(--csv-surface);
-  box-shadow: var(--csv-shadow-sm);
-}
-
-.landing-feature-card .h6 {
-  font-weight: 700;
-}
-
-.landing-trust-list {
-  padding-left: 1.2rem;
-  color: var(--csv-text-muted);
-}
-
-.landing-trust-list li + li {
-  margin-top: 0.5rem;
-}
-
-.landing-step-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 1rem;
-}
-
-.landing-step-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem 1.15rem;
-  border: 1px solid var(--csv-border);
-  border-radius: var(--csv-radius-sm);
-  background: var(--csv-surface);
-  box-shadow: var(--csv-shadow-sm);
-}
-
-.landing-step-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 999px;
-  background: var(--csv-primary-soft);
-  color: var(--csv-primary);
-  font-size: 0.875rem;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-@media (max-width: 575.98px) {
-  .landing-hero-actions .btn-lg {
+  .csv-upload-submit {
     width: 100%;
   }
 }

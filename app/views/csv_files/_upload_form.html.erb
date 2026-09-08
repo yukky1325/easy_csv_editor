@@ -1,0 +1,33 @@
+<%= form_with url: csv_files_path,
+              scope: :csv_upload_form,
+              local: true,
+              html: {
+                multipart: true,
+                class: "csv-upload-form",
+                data: { controller: "csv-upload" }
+              } do |f| %>
+  <label class="csv-upload-dropzone"
+         data-csv-upload-target="dropzone"
+         data-action="dragover->csv-upload#highlight dragenter->csv-upload#highlight dragleave->csv-upload#unhighlight drop->csv-upload#drop">
+    <%= f.file_field :file,
+                     accept: ".csv",
+                     required: true,
+                     class: "csv-upload-input",
+                     data: {
+                       csv_upload_target: "input",
+                       action: "change->csv-upload#change"
+                     } %>
+    <span class="csv-upload-prompt" data-csv-upload-target="prompt">
+      CSVファイルをドロップ、またはクリックして選択
+    </span>
+    <span class="csv-upload-filename" data-csv-upload-target="filename" hidden></span>
+  </label>
+
+  <p class="csv-upload-meta">
+    <code><%= CsvTool::ALLOWED_EXTENSION %></code>
+    ・最大 <%= csv_max_file_size_label %>
+    ・データベースには保存しません
+  </p>
+
+  <%= f.submit "アップロード", class: "ecsv-btn ecsv-btn-primary csv-upload-submit" %>
+<% end %>

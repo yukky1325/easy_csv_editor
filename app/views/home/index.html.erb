@@ -1,115 +1,274 @@
-<section class="landing-hero">
-  <div class="row align-items-center g-4 g-lg-5">
-    <div class="col-lg-7">
-      <p class="landing-eyebrow mb-2">ブラウザだけで完結</p>
-      <h1 class="landing-title mb-3"><%= app_display_name %></h1>
-      <p class="landing-lead mb-4">
-        CSV ファイルをアップロードし、列の抽出・行の削除・セル編集・文字コード変換を行ったうえで、
-        加工後の CSV をそのままダウンロードできます。インストール不要です。
-      </p>
-      <div class="d-flex flex-wrap gap-2 landing-hero-actions">
-        <%= link_to "CSVをアップロードして始める", new_csv_file_path, class: "btn btn-primary btn-lg px-4" %>
-        <%= link_to "できることを見る", "#features", class: "btn btn-outline-secondary btn-lg px-4" %>
-      </div>
-    </div>
-    <div class="col-lg-5">
-      <div class="landing-hero-card">
-        <div class="landing-hero-card-row">
-          <span class="landing-hero-card-label">対応形式</span>
-          <span class="landing-hero-card-value"><code><%= CsvTool::ALLOWED_EXTENSION %></code></span>
+<div class="ecsv-landing">
+  <section class="ecsv-hero">
+    <div class="ecsv-shell ecsv-hero-grid">
+      <div class="ecsv-hero-copy">
+        <div class="ecsv-badge">
+          <span class="ecsv-badge-dot"></span>
+          登録不要・ブラウザですぐ使える
         </div>
-        <div class="landing-hero-card-row">
-          <span class="landing-hero-card-label">文字コード</span>
-          <span class="landing-hero-card-value"><%= csv_supported_input_encodings_label %></span>
-        </div>
-        <div class="landing-hero-card-row">
-          <span class="landing-hero-card-label">最大サイズ</span>
-          <span class="landing-hero-card-value"><%= csv_max_file_size_label %></span>
-        </div>
-        <div class="landing-hero-card-row landing-hero-card-row-last">
-          <span class="landing-hero-card-label">データ保存</span>
-          <span class="landing-hero-card-value">DBに保存しません</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section id="features" class="landing-section">
-  <div class="landing-section-header">
-    <h2 class="h4 mb-2">できること</h2>
-    <p class="text-muted mb-0">Excel のように表を確認しながら、必要な加工をその場で行えます。</p>
-  </div>
-  <div class="row g-3 g-md-4">
-    <div class="col-md-6 col-lg-3">
-      <article class="landing-feature-card h-100">
-        <h3 class="h6 mb-2">列の抽出・並べ替え</h3>
-        <p class="text-muted small mb-0">出力する列を選び、列の順序を入れ替えられます。</p>
-      </article>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <article class="landing-feature-card h-100">
-        <h3 class="h6 mb-2">行の選択・削除・ソート</h3>
-        <p class="text-muted small mb-0">行単位の出力制御、空行削除、基準列による並べ替えに対応します。</p>
-      </article>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <article class="landing-feature-card h-100">
-        <h3 class="h6 mb-2">セル編集・列名変更</h3>
-        <p class="text-muted small mb-0">表上で直接編集し、接頭辞・置換などの一括変更も行えます。</p>
-      </article>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <article class="landing-feature-card h-100">
-        <h3 class="h6 mb-2">文字コード変換</h3>
-        <p class="text-muted small mb-0">UTF-8 や Shift_JIS など、用途に合わせた形式でダウンロードできます。</p>
-      </article>
-    </div>
-  </div>
-</section>
+        <h1>
+          面倒なCSV作業を、<br>
+          <span>もっと軽やかに。</span>
+        </h1>
 
-<section class="landing-section">
-  <div class="landing-trust card csv-card">
-    <div class="card-body p-4">
-      <h2 class="h5 mb-3">安心して使える設計</h2>
-      <ul class="landing-trust-list mb-0">
-        <li>アップロードした CSV は一時ファイルとして処理され、データベースには保存されません。</li>
-        <li>加工完了後は、速やかにダウンロードしてください。</li>
-        <li>個人情報を含むファイルの取り扱いには十分ご注意ください。</li>
-      </ul>
-      <div class="mt-4">
-        <%= link_to "さっそく使ってみる", new_csv_file_path, class: "btn btn-primary" %>
+        <p class="ecsv-hero-lead">
+          Excelやプログラミングは不要。列の整理、行の削除、セル編集、
+          並べ替え、文字コード変換まで、画面で見ながらかんたんに整えられます。
+        </p>
+
+        <div class="ecsv-actions">
+          <%= link_to new_csv_file_path, class: "ecsv-btn ecsv-btn-primary" do %>
+            CSVファイルを選んで始める <span aria-hidden="true">→</span>
+          <% end %>
+          <%= link_to "使い方を見る", "#how-it-works", class: "ecsv-btn ecsv-btn-secondary" %>
+        </div>
+
+        <div class="ecsv-hero-meta">
+          <span><strong><%= csv_max_file_size_label %></strong> まで</span>
+          <span><strong><%= csv_supported_input_encodings_label %></strong> 対応</span>
+          <span><strong>DB保存なし</strong></span>
+        </div>
+      </div>
+
+      <div class="ecsv-product-visual">
+        <span class="ecsv-float-label ecsv-float-label-top">画面を見ながら編集</span>
+        <div class="ecsv-product-shot" aria-label="CSV編集画面のイメージ">
+        <div class="ecsv-window-bar">
+          <span class="ecsv-window-dot"></span>
+          <span class="ecsv-window-dot"></span>
+          <span class="ecsv-window-dot"></span>
+          <span class="ecsv-window-title">customers.csv</span>
+        </div>
+
+        <div class="ecsv-toolbar">
+          <span class="ecsv-tool active">✓ 列を選択</span>
+          <span class="ecsv-tool">↕ 並べ替え</span>
+          <span class="ecsv-tool">Aa 文字置換</span>
+          <span class="ecsv-tool">UTF-8</span>
+        </div>
+
+        <div class="ecsv-table-wrap">
+          <table class="ecsv-demo-table">
+            <thead>
+              <tr>
+                <th class="ecsv-check">✓</th>
+                <th>氏名 <small>A</small></th>
+                <th>メール <small>B</small></th>
+                <th>都道府県 <small>C</small></th>
+                <th>備考 <small>D</small></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ecsv-check">✓</td>
+                <td>山田 太郎</td>
+                <td>taro@example.jp</td>
+                <td>大阪府</td>
+                <td class="ecsv-muted-cell">―</td>
+              </tr>
+              <tr>
+                <td class="ecsv-check">✓</td>
+                <td>佐藤 花子</td>
+                <td class="ecsv-edited">hanako@example.jp</td>
+                <td>兵庫県</td>
+                <td>確認済</td>
+              </tr>
+              <tr>
+                <td class="ecsv-check">✓</td>
+                <td>鈴木 一郎</td>
+                <td>ichiro@example.jp</td>
+                <td>京都府</td>
+                <td class="ecsv-muted-cell">―</td>
+              </tr>
+              <tr class="ecsv-disabled-row">
+                <td class="ecsv-check">×</td>
+                <td>空欄データ</td>
+                <td></td>
+                <td></td>
+                <td>出力しない</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="ecsv-shot-footer">
+          <div>
+            <span class="ecsv-status-dot"></span>
+            3行 × 4列を出力
+          </div>
+          <div class="ecsv-mini-btn">加工を実行 →</div>
+        </div>
+        </div>
+        <span class="ecsv-float-label ecsv-float-label-bottom">保存せず、そのまま出力</span>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="landing-section landing-steps">
-  <div class="landing-section-header">
-    <h2 class="h4 mb-2">使い方</h2>
-    <p class="text-muted mb-0">3 ステップで完了します。</p>
-  </div>
-  <ol class="landing-step-list">
-    <li>
-      <span class="landing-step-number">1</span>
-      <div>
-        <strong>CSV をアップロード</strong>
-        <p class="text-muted small mb-0"><code><%= CsvTool::ALLOWED_EXTENSION %></code> 形式のファイルを選択します。</p>
+  <section class="ecsv-problem">
+    <div class="ecsv-shell">
+      <p class="ecsv-section-kicker">CSV作業をもっと軽く</p>
+      <h2>こんな作業のために、表計算ソフトを開いていませんか？</h2>
+
+      <div class="ecsv-problem-grid">
+        <article class="ecsv-problem-card ecsv-problem-card-coral">
+          <div class="ecsv-icon">01</div>
+          <h3>必要な列だけ残したい</h3>
+          <p>使わない列を削除し、提出先やシステムに必要な項目だけに整理。</p>
+        </article>
+        <article class="ecsv-problem-card ecsv-problem-card-sage">
+          <div class="ecsv-icon">02</div>
+          <h3>空行や不要な行を消したい</h3>
+          <p>完全な空行や、指定列が空欄のレコードをまとめて除外。</p>
+        </article>
+        <article class="ecsv-problem-card ecsv-problem-card-gold">
+          <div class="ecsv-icon">03</div>
+          <h3>文字コードだけ変えたい</h3>
+          <p>UTF-8 / UTF-8 BOM / Windows-31Jを用途に合わせて変換。</p>
+        </article>
       </div>
-    </li>
-    <li>
-      <span class="landing-step-number">2</span>
-      <div>
-        <strong>内容を確認して加工</strong>
-        <p class="text-muted small mb-0">プレビュー画面で列・行の選択、編集、ソートなどを行います。</p>
+    </div>
+  </section>
+
+  <section id="features" class="ecsv-features">
+    <div class="ecsv-shell">
+      <div class="ecsv-section-heading">
+        <div>
+          <p class="ecsv-section-kicker">FEATURES</p>
+          <h2>見る・直す・整える。<br>CSV加工をひとつの画面で。</h2>
+        </div>
+        <p>
+          加工前に全行をプレビューできるので、結果を想像しながら設定する必要はありません。
+          表を見ながら必要な操作を選べます。
+        </p>
       </div>
-    </li>
-    <li>
-      <span class="landing-step-number">3</span>
-      <div>
-        <strong>ダウンロード</strong>
-        <p class="text-muted small mb-0">加工後の CSV をそのまま保存できます。</p>
+
+      <div class="ecsv-feature-grid">
+        <article class="ecsv-feature-card ecsv-feature-large">
+          <div class="ecsv-feature-copy">
+            <span class="ecsv-feature-tag">SELECT</span>
+            <h3>必要な列・行だけを出力</h3>
+            <p>チェックで出力対象を選択。列順の入れ替えや行単位の除外にも対応しています。</p>
+          </div>
+          <div class="ecsv-column-demo">
+            <span class="selected">✓ A 氏名</span>
+            <span>× B 社内メモ</span>
+            <span class="selected">✓ C メール</span>
+            <span class="selected">✓ D 地域</span>
+          </div>
+        </article>
+
+        <article class="ecsv-feature-card">
+          <span class="ecsv-feature-tag">EDIT</span>
+          <h3>セルをその場で編集</h3>
+          <p>Excelのようにプレビュー表のセルを直接編集。変更箇所も視覚的に確認できます。</p>
+          <div class="ecsv-edit-demo">
+            <span>customer@example.jp</span>
+            <strong>編集中</strong>
+          </div>
+        </article>
+
+        <article class="ecsv-feature-card">
+          <span class="ecsv-feature-tag">CLEAN</span>
+          <h3>不要データを整理</h3>
+          <p>完全空行や指定列が空欄の行をまとめて削除し、データを整形できます。</p>
+          <div class="ecsv-clean-demo">
+            <span>120 行</span>
+            <b>→</b>
+            <strong>108 行</strong>
+          </div>
+        </article>
+
+        <article class="ecsv-feature-card">
+          <span class="ecsv-feature-tag">SORT</span>
+          <h3>行の並べ替え</h3>
+          <p>出力対象の列を基準にデータ行をソート。CSVを開き直す手間を減らします。</p>
+          <div class="ecsv-sort-demo"><span>A</span><span>↓</span><span>Z</span></div>
+        </article>
+
+        <article class="ecsv-feature-card ecsv-feature-accent">
+          <span class="ecsv-feature-tag">ENCODING</span>
+          <h3>文字コード変換</h3>
+          <p>入力を自動判定し、用途に合わせた文字コードで書き出せます。</p>
+          <div class="ecsv-code-pills">
+            <% CsvTool::SUPPORTED_OUTPUT_ENCODINGS.each do |encoding| %>
+              <span><%= csv_output_encoding_label(encoding) %></span>
+            <% end %>
+          </div>
+        </article>
       </div>
-    </li>
-  </ol>
-</section>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="ecsv-flow">
+    <div class="ecsv-shell">
+      <p class="ecsv-section-kicker">HOW IT WORKS</p>
+      <h2>操作は、3ステップ。</h2>
+
+      <div class="ecsv-flow-grid">
+        <article>
+          <span class="ecsv-flow-number">1</span>
+          <div class="ecsv-flow-visual">
+            <div class="ecsv-upload-icon">↑</div>
+            <span>sample.csv</span>
+          </div>
+          <h3>アップロード</h3>
+          <p>CSVファイルを選ぶだけ。文字コードは自動で判定します。</p>
+        </article>
+
+        <article>
+          <span class="ecsv-flow-number">2</span>
+          <div class="ecsv-flow-visual ecsv-flow-editor">
+            <span>列</span><span>行</span><span>編集</span><span>変換</span>
+          </div>
+          <h3>プレビューしながら加工</h3>
+          <p>列・行の選択、セル編集、ソートなどを画面上で設定。</p>
+        </article>
+
+        <article>
+          <span class="ecsv-flow-number">3</span>
+          <div class="ecsv-flow-visual">
+            <div class="ecsv-download-icon">↓</div>
+            <span>converted.csv</span>
+          </div>
+          <h3>ダウンロード</h3>
+          <p>加工結果を確認し、整形済みCSVをそのまま保存できます。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="ecsv-security">
+    <div class="ecsv-shell">
+      <div class="ecsv-security-card">
+        <div class="ecsv-security-icon" aria-hidden="true">⌁</div>
+        <div>
+          <p class="ecsv-section-kicker">DATA HANDLING</p>
+          <h2>CSV本文をデータベースに保存しません。</h2>
+          <p>
+            アップロードしたCSVは一時ファイルとして処理します。
+            セッションにはトークンとメタ情報のみを保持し、CSVのデータ行や加工後本文は保存しません。
+          </p>
+        </div>
+        <div class="ecsv-security-points">
+          <span>✓ DB保存なし</span>
+          <span>✓ セッション分離</span>
+          <span>✓ CSV Injection対策</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ecsv-final-cta">
+    <div class="ecsv-shell">
+      <div class="ecsv-final-card">
+        <p class="ecsv-section-kicker">READY?</p>
+        <h2>CSV加工を、もっと手軽に。</h2>
+        <p>ソフトをインストールせず、ブラウザからすぐに始められます。</p>
+        <%= link_to new_csv_file_path, class: "ecsv-btn ecsv-btn-light" do %>
+          CSVをアップロードして始める <span aria-hidden="true">→</span>
+        <% end %>
+      </div>
+    </div>
+  </section>
+</div>

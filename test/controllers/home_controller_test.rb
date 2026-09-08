@@ -7,11 +7,12 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     get root_url
 
     assert_response :success
-    assert_match "Easy CSV Editor", response.body
-    assert_match "CSVをアップロードして始める", response.body
-    assert_match "できること", response.body
-    assert_match "安心して使える設計", response.body
+    assert_match "面倒なCSV作業を", response.body
+    assert_match "もっと軽やかに", response.body
+    assert_match "CSVファイルを選んで始める", response.body
+    assert_match "操作は、3ステップ", response.body
     assert_select "a[href=?]", new_csv_file_path
+    assert_select "a[href=?]", "#how-it-works"
     assert_select "form[enctype=?]", "multipart/form-data", count: 0
   end
 end
